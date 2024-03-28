@@ -1,0 +1,1512 @@
+[
+  {
+    "name": "Aatrox",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Darkin",
+    "resource": "Furreur",
+    "rangeType": "Mêlée",
+    "region": "Rune-Terra",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Ahri",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Vastaya",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Akali",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Alistar",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Minotaure",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Amumu",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shurima",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Anivia",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Cryophénix",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Annie",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Aphelios",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Munitions",
+    "rangeType": "À distance",
+    "region": "Targon",
+    "releaseYear": 2019
+  },
+  {
+    "name": "Ashe",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "AurelionSol",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Dragon",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Targon",
+    "releaseYear": 2016
+  },
+  {
+    "name": "Azir",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shurima",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Bard",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2015
+  },
+  {
+    "name": "Blitzcrank",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Golem",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Zaun",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Brand",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Braum",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Caitlyn",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Camille",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Piltover",
+    "releaseYear": 2016
+  },
+  {
+    "name": "Cassiopeia",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Chogath",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Voidborn",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Void",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Corki",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Darius",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Diana",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Lune",
+    "rangeType": "Mêlée",
+    "region": "Targon",
+    "releaseYear": 2012
+  },
+  {
+    "name": "DrMundo",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Santé",
+    "rangeType": "Mêlée",
+    "region": "Zaun",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Draven",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Ekko",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Zaun",
+    "releaseYear": 2015
+  },
+  {
+    "name": "Elise",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Evelynn",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Ezreal",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Fiddlesticks",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Épouvantail",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Fiora",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Fizz",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Bilgewater",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Galio",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Gargouille",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Gangplank",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Bilgewater",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Garen",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Gnar",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Yordle",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Gragas",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Graves",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bilgewater",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Hecarim",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Spectre",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Heimerdinger",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Illaoi",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Bilgewater",
+    "releaseYear": 2015
+  },
+  {
+    "name": "Irelia",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Ivern",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Runeterra",
+    "releaseYear": 2016
+  },
+  {
+    "name": "Janna",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "JarvanIV",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Jax",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Jayce",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Jhin",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2016
+  },
+  {
+    "name": "Jinx",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Zaun",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Kaisa",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Void",
+    "releaseYear": 2018
+  },
+  {
+    "name": "Kalista",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Ombre",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shadow Isles",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Karma",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Karthus",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Liche",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shadow Isles",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Kassadin",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Void",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Katarina",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Kayle",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Kayn",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2017
+  },
+  {
+    "name": "Kennen",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Énergie",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Khazix",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Voidreaver",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Void",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Kindred",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shadow Isles",
+    "releaseYear": 2015
+  },
+  {
+    "name": "Kled",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2016
+  },
+  {
+    "name": "KogMaw",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Voidborn",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Void",
+    "releaseYear": 2010
+  },
+  {
+    "name": "LeBlanc",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "LeeSin",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Leona",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Targon",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Lissandra",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Freljord",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Lucian",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Lulu",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Lux",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Malphite",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Golem",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Malzahar",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Voidborn",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Void",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Maokai",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2011
+  },
+  {
+    "name": "MaitreYi",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "MissFortune",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bilgewater",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Mordekaiser",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Santé",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Morgana",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Nami",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Marin",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Targon",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Nasus",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shurima",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Nautilus",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Titan",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Bilgewater",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Neeko",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Vastaya",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2018
+  },
+  {
+    "name": "Nidalee",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Nocturne",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Nunu",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Olaf",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Orianna",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Ornn",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2017
+  },
+  {
+    "name": "Pantheon",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Targon",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Poppy",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Pyke",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Bilgewater",
+    "releaseYear": 2018
+  },
+  {
+    "name": "Qiyana",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ixtal",
+    "releaseYear": 2019
+  },
+  {
+    "name": "Quinn",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Rakan",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Vastaya",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2017
+  },
+  {
+    "name": "Rammus",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shurima",
+    "releaseYear": 2009
+  },
+  {
+    "name": "RekSai",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Voidborn",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Void",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Renekton",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Shurima",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Rengar",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Yordle",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Void",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Riven",
+    "genre": "Féminin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Rumble",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Yordle",
+    "resource": "Chaleur",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Ryze",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Sejuani",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Senna",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2019
+  },
+  {
+    "name": "Seraphine",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2020
+  },
+  {
+    "name": "Sett",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2020
+  },
+  {
+    "name": "Shaco",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Runeterra",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Shen",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Shyvana",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Singed",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Zaun",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Sion",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Zombie",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Sivir",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shurima",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Skarner",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Scorpion",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shurima",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Sona",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Soraka",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Targon",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Swain",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Sylas",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2019
+  },
+  {
+    "name": "Syndra",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2012
+  },
+  {
+    "name": "TahmKench",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Démon",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Runeterra",
+    "releaseYear": 2015
+  },
+  {
+    "name": "Taliyah",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shurima",
+    "releaseYear": 2016
+  },
+  {
+    "name": "Talon",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Noxus",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Taric",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Targon",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Teemo",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Thresh",
+    "genre": "Masculin",
+    "role": "Soutien",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Tristana",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Trundle",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Troll",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Tryndamere",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "TwistedFate",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bilgewater",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Twitch",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Zaun",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Udyr",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Urgot",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Varus",
+    "genre": "Masculin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Vayne",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Demacia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Veigar",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2010
+  },
+  {
+    "name": "VelKoz",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Voidborn",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Void",
+    "releaseYear": 2014
+  },
+  {
+    "name": "Vi",
+    "genre": "Féminin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Piltover",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Viego",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2021
+  },
+  {
+    "name": "Viktor",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Vladimir",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Santé",
+    "rangeType": "À distance",
+    "region": "Noxus",
+    "releaseYear": 2010
+  },
+  {
+    "name": "Volibear",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Warwick",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Loup",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Freljord",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Wukong",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Xayah",
+    "genre": "Féminin",
+    "role": "Tireur",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Ionia",
+    "releaseYear": 2017
+  },
+  {
+    "name": "Xerath",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Shurima",
+    "releaseYear": 2011
+  },
+  {
+    "name": "XinZhao",
+    "genre": "Masculin",
+    "role": "Jungle",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Demacia",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Yasuo",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Yone",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Fureur",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2020
+  },
+  {
+    "name": "Yorick",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Shadow Isles",
+    "releaseYear": 2011
+  },
+  {
+    "name": "Yuumi",
+    "genre": "Féminin",
+    "role": "Soutien",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Bandle City",
+    "releaseYear": 2019
+  },
+  {
+    "name": "Zac",
+    "genre": "Masculin",
+    "role": "Haut",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "Mêlée",
+    "region": "Zaun",
+    "releaseYear": 2013
+  },
+  {
+    "name": "Zed",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Énergie",
+    "rangeType": "Mêlée",
+    "region": "Ionia",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Ziggs",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Yordle",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Piltover",
+    "releaseYear": 2012
+  },
+  {
+    "name": "Zilean",
+    "genre": "Masculin",
+    "role": "Milieu",
+    "species": "Humain",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Zaun",
+    "releaseYear": 2009
+  },
+  {
+    "name": "Zoe",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Esprit",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Targon",
+    "releaseYear": 2017
+  },
+  {
+    "name": "Zyra",
+    "genre": "Féminin",
+    "role": "Milieu",
+    "species": "Plante",
+    "resource": "Mana",
+    "rangeType": "À distance",
+    "region": "Runeterra",
+    "releaseYear": 2012
+  }
+]
