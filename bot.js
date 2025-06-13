@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
-const { DISCORD_BOT_TOKEN } = require("./config/config");
+const { DISCORD_BOT_TOKEN, DISCORD_CHANNEL_ID } = require("./config/config");
 const lolhistory = require("./commands/lolhistory");
 const elo = require("./commands/elo");
 const champ = require("./commands/champ");
@@ -29,28 +29,11 @@ const client = new Client({
   ],
 });
 
-// Événement déclenché lorsque le bot est prêt / Ajout d'une commande pour lancer un message toutes les 29 minutes pour éviter l'inactive du bot (plan hébergement gratuit)
+const valorantPlayers = new Set();
+
+// Événement déclenché lorsque le bot est prêt
 client.once("ready", () => {
   console.log("Le bot est prêt !");
-
-  setInterval(() => {
-    const channel = client.channels.cache.get("1219777966754758747");
-    if (channel) {
-      const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle("Nadir Bot")
-        .setDescription(
-          "Salem les freres, je suis le bot de Nadir. Je dois envoyer un message toutes les 29 minutes pour que mon bot soit connecté car je suis héberger dans un serveur gratuitement. Passez une bonne journée !"
-        )
-        .setFooter({
-          text: "Tapez !help pour voir la liste des commandes disponibles.",
-        });
-
-      channel.send({ embeds: [embed] }).catch(console.error);
-    } else {
-      console.log("Impossible de trouver le canal.");
-    }
-  }, 1740000);
 });
 
 // Événement déclenché lorsqu'un message est envoyé dans un salon
@@ -181,5 +164,50 @@ client.on("messageCreate", async (message) => {
     await inforune(message);
   }
 });
+
+// 🎮 Détection de lancement de Valorant sans spam
+client.on("presenceUpdate", (oldPresence, newPresence) => {
+  if (!newPresence || !newPresence.user || !newPresence.activities) return;
+
+  const userId = newPresence.userId || newPresence.user.id;
+
+  const isPlayingValorant = newPresence.activities.some(
+    (activity) =>
+      activity.type === 0 && activity.name?.toLowerCase() === "valorant"
+  );
+
+  if (isPlayingValorant && !valorantPlayers.has(userId)) {
+    valorantPlayers.add(userId);
+
+    const channel = client.channels.cache.get(DISCORD_CHANNEL_ID);
+    if (channel) {
+      const embed = new EmbedBuilder()
+        .setColor(0xff4655)
+        .setDescription(
+          `🕹️ **${newPresence.user.username}** vient de lancer **Valorant** ! 🔫`
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "LeagueBot",
+          iconURL: client.user.displayAvatarURL(),
+        });
+
+      channel.send({ embeds: [embed] });
+    }
+  }
+
+  if (!isPlayingValorant && valorantPlayers.has(userId)) {
+    valorantPlayers.delete(userId);
+  }
+});
+
+const http = require("http");
+
+http
+  .createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Bot is alive!\n");
+  })
+  .listen(process.env.PORT || 3000);
 
 client.login(DISCORD_BOT_TOKEN);
