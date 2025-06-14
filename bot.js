@@ -7,7 +7,13 @@ const rotation = require("./commands/rotation");
 const compare = require("./commands/compare");
 const ranked = require("./commands/ranked");
 const guest = require("./commands/guest");
+const valostats = require("./commands/valostats");
 const skills = require("./commands/skills");
+const valoskins = require("./commands/valoskins");
+const valomap = require("./commands/valomap");
+
+const valohistory = require("./commands/valohistory");
+
 const skins = require("./commands/skins");
 const anime = require("./commands/anime");
 const opening = require("./commands/opening");
@@ -17,7 +23,6 @@ const infoitem = require("./commands/infoitem");
 const inforune = require("./commands/inforune");
 const { showRanking } = require("./commands/classement");
 
-// Crée une instance du client Discord
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -31,12 +36,10 @@ const client = new Client({
 
 const valorantPlayers = new Set();
 
-// Événement déclenché lorsque le bot est prêt
 client.once("ready", () => {
   console.log("Le bot est prêt !");
 });
 
-// Événement déclenché lorsqu'un message est envoyé dans un salon
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   if (message.content === "!help") {
@@ -162,6 +165,14 @@ client.on("messageCreate", async (message) => {
     await infoitem(message);
   } else if (message.content.startsWith("!inforune")) {
     await inforune(message);
+  } else if (message.content.startsWith("!valohistory")) {
+    await valohistory(message);
+  } else if (message.content.startsWith("!valostats")) {
+    await valostats(message);
+  } else if (message.content.startsWith("!valoskins")) {
+    await valoskins(message);
+  } else if (message.content.startsWith("!valomap")) {
+    await valomap(message);
   }
 });
 
