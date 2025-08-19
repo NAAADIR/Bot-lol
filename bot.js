@@ -34,10 +34,18 @@ const client = new Client({
   ],
 });
 
+const startNewsWatcher = require("./services/newsWatcher");
+
 const valorantPlayers = new Set();
 
 client.once("ready", () => {
   console.log("Le bot est prêt !");
+  // Démarre le watcher des news LoLEsports
+  try {
+    startNewsWatcher(client);
+  } catch (err) {
+    console.error("Erreur lors du démarrage du newsWatcher:", err);
+  }
 });
 
 client.on("messageCreate", async (message) => {
