@@ -2,6 +2,7 @@
 const axios = require("axios");
 const { RIOT_API_KEY } = require("../config/config");
 const { EmbedBuilder } = require("discord.js");
+const { getSummonerIdentity } = require("../services/riotApiService");
 
 module.exports = async (message) => {
   const args = message.content.slice("!compare".length).trim().split(" ");
@@ -9,29 +10,18 @@ module.exports = async (message) => {
   const summonerInput2 = args[1];
 
   try {
-    const summonerResponse1 = await axios.get(
-      `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(
-        summonerInput1
-      )}?api_key=${RIOT_API_KEY}`
-    );
-    const summonerResponse2 = await axios.get(
-      `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(
-        summonerInput2
-      )}?api_key=${RIOT_API_KEY}`
-    );
+    const summoner1 = await getSummonerIdentity(summonerInput1);
+    const summoner2 = await getSummonerIdentity(summonerInput2);
 
-    const { id: id1, name: name1 } = summonerResponse1.data;
-    const { id: id2, name: name2 } = summonerResponse2.data;
-
-    const summonerStats1 = await getSummonerStats(id1);
-    const summonerStats2 = await getSummonerStats(id2);
+    const summonerStats1 = await getSummonerStats(summoner1.summonerId);
+    const summonerStats2 = await getSummonerStats(summoner2.summonerId);
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle(`Comparaison des Invocateurs`)
       .addFields(
-        { name: name1, value: summonerStats1, inline: true },
-        { name: name2, value: summonerStats2, inline: true }
+        { name: summoner1.displayName, value: summonerStats1, inline: true },
+        { name: summoner2.displayName, value: summonerStats2, inline: true }
       )
       .setTimestamp();
 

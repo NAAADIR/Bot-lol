@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
 const { RIOT_API_KEY } = require("../config/config");
+const { getChampionList } = require("../services/lolDataService");
 
 // La fonction principale qui traite la commande !rotation
 module.exports = async (message) => {
@@ -34,10 +35,7 @@ module.exports = async (message) => {
 // Fonction pour récupérer les noms des champions à partir de leurs ID
 async function getChampionNamesByIds(ids) {
   try {
-    const response = await axios.get(
-      "https://ddragon.leagueoflegends.com/cdn/14.6.1/data/fr_FR/champion.json"
-    );
-    const champions = response.data.data;
+    const champions = await getChampionList();
 
     // Création d'un map d'ID à nom pour tous les champions
     const idToNameMap = {};

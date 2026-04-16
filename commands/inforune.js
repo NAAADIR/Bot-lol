@@ -1,12 +1,9 @@
-const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
+const { getRunes } = require("../services/lolDataService");
 
 async function fetchAllRunes() {
-  const url =
-    "https://ddragon.leagueoflegends.com/cdn/14.6.1/data/fr_FR/runesReforged.json";
   try {
-    const response = await axios.get(url);
-    return response.data;
+    return await getRunes();
   } catch (error) {
     console.error(
       "Erreur lors de la récupération de la liste des runes:",

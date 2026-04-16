@@ -1,3 +1,4 @@
+const championsData = require("../champion.json");
 const { updateScore } = require("./classement");
 const {
   createInfoEmbed,
@@ -10,41 +11,34 @@ const {
   getSessionForGame,
   cancelSession,
 } = require("../services/gameSessionManager");
-const {
-  normalizeName,
-  getChampionList,
-  getChampionDetails,
-  spellImageUrl,
-} = require("../services/lolDataService");
+const { normalizeName, championSquareUrl } = require("../services/lolDataService");
 
-const GAME_TYPE = "skills";
-const SESSION_DURATION_MS = 1000 * 60 * 3;
+const GAME_TYPE = "regionquiz";
+const SESSION_DURATION_MS = 1000 * 60 * 2;
 
-async function startSkillsGame(message) {
-  const championList = Object.values(await getChampionList());
-  const champion = championList[Math.floor(Math.random() * championList.length)];
-  const championDetails = await getChampionDetails(champion.id);
-  const spell =
-    championDetails.spells[
-      Math.floor(Math.random() * championDetails.spells.length)
-    ];
+function pickChampion() {
+  return championsData[Math.floor(Math.random() * championsData.length)];
+}
 
+async function startRegionQuiz(message) {
+  const champion = pickChampion();
   const { previousSession } = await startSession({
     channelId: message.channel.id,
     gameType: GAME_TYPE,
     message,
     durationMs: SESSION_DURATION_MS,
     data: {
-      championId: champion.id,
       championName: champion.name,
-      spellName: spell.name,
+      region: champion.region,
     },
     onExpire: async (expiredMessage, session) => {
       await expiredMessage.channel.send({
         embeds: [
           createErrorEmbed(
             "Partie expiree",
-            `Le champion a trouver etait **${session.get("championName")}**.`
+            `La bonne reponse etait **${session.get("region")}** pour **${session.get(
+              "championName"
+            )}**.`
           ),
         ],
       });
@@ -52,31 +46,35 @@ async function startSkillsGame(message) {
   });
 
   const embed = createInfoEmbed(
-    "Qui possede ce sort ?",
+    "Region Quiz",
     previousSession
-      ? "Une ancienne partie a ete remplacee.\nDevinez le champion avec `!skills <nom>`."
-      : "Devinez le champion a partir du sort affiche."
+      ? "L'ancienne partie a ete remplacee.\nDe quelle region vient ce champion ?"
+      : "De quelle region vient ce champion ?"
   ).addFields({
-    name: "Sort",
-    value: spell.name,
+    name: "Champion",
+    value: champion.name,
     inline: false,
   });
 
-  embed.setImage(await spellImageUrl(spell.image.full));
+  const thumbnailUrl = await championSquareUrl(champion.name);
+  if (thumbnailUrl) {
+    embed.setThumbnail(thumbnailUrl);
+  }
+
   await message.channel.send({ embeds: [embed] });
 }
 
 module.exports = async (message) => {
-  const input = getCommandArgs(message, "!skills");
+  const input = getCommandArgs(message, "!regionquiz");
 
   if (!input) {
-    await startSkillsGame(message);
+    await startRegionQuiz(message);
     return;
   }
 
   if (["stop", "reset", "cancel", "annuler"].includes(normalizeName(input))) {
     if (normalizeName(input) === "reset") {
-      await startSkillsGame(message);
+      await startRegionQuiz(message);
       return;
     }
 
@@ -84,8 +82,11 @@ module.exports = async (message) => {
     await message.channel.send({
       embeds: [
         session
-          ? createInfoEmbed("Partie annulee", "La partie `!skills` a ete arretee.")
-          : createInfoEmbed("Aucune partie", "Aucune partie `!skills` n'est active ici."),
+          ? createInfoEmbed("Partie annulee", "La partie `!regionquiz` a ete arretee.")
+          : createInfoEmbed(
+              "Aucune partie",
+              "Aucune partie `!regionquiz` n'est active ici."
+            ),
       ],
     });
     return;
@@ -93,28 +94,26 @@ module.exports = async (message) => {
 
   const session = getSessionForGame(message.channel.id, GAME_TYPE);
   if (!session) {
-    await startSkillsGame(message);
+    await startRegionQuiz(message);
     await message.channel.send({
       embeds: [
         createInfoEmbed(
           "Partie demarree",
-          "Aucune partie `!skills` n'etait active. J'en ai lance une nouvelle, renvoie ta reponse."
+          "Aucune partie `!regionquiz` n'etait active. J'en ai lance une nouvelle, renvoie ta reponse."
         ),
       ],
     });
     return;
   }
 
-  if (normalizeName(input) === normalizeName(session.get("championName"))) {
+  if (normalizeName(input) === normalizeName(session.get("region"))) {
     updateScore(message.author.id, GAME_TYPE, 1);
     await cancelSession(message.channel.id, "completed");
     await message.channel.send({
       embeds: [
         createSuccessEmbed(
           "Bonne reponse !",
-          `Le sort **${session.get("spellName")}** appartient a **${session.get(
-            "championName"
-          )}**.`
+          `**${session.get("championName")}** vient bien de **${session.get("region")}**.`
         ),
       ],
     });
@@ -123,10 +122,7 @@ module.exports = async (message) => {
 
   await message.channel.send({
     embeds: [
-      createErrorEmbed(
-        "Mauvaise reponse",
-        "Ce n'est pas le bon champion. Reessaie ou utilise `!skills reset`."
-      ),
+      createErrorEmbed("Incorrect", "Ce n'est pas la bonne region. Reessaie."),
     ],
   });
 };

@@ -1,100 +1,126 @@
-const axios = require("axios");
-const { EmbedBuilder } = require("discord.js");
 const { updateScore } = require("./classement");
+const {
+  createInfoEmbed,
+  createSuccessEmbed,
+  createErrorEmbed,
+  getCommandArgs,
+} = require("../services/gameMessageUtils");
+const {
+  startSession,
+  getSessionForGame,
+  cancelSession,
+} = require("../services/gameSessionManager");
+const { normalizeName, getItems, itemImageUrl } = require("../services/lolDataService");
 
-let goldSessions = {};
+const GAME_TYPE = "gold";
+const SESSION_DURATION_MS = 1000 * 60 * 3;
 
-// Fonction pour récupérer la liste de tous les objets
-async function fetchAllItems() {
-  const url =
-    "http://ddragon.leagueoflegends.com/cdn/14.6.1/data/fr_FR/item.json";
-  try {
-    const response = await axios.get(url);
-    return response.data.data;
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération de la liste des objets:",
-      error
-    );
-    return {};
-  }
-}
-
-// Fonction pour sélectionner un objet aléatoire
-async function selectRandomItem(itemsData) {
-  const itemKeys = Object.keys(itemsData).filter(
-    (key) => itemsData[key].gold && !itemsData[key].hideFromAll
+async function startGoldGame(message) {
+  const items = Object.values(await getItems()).filter(
+    (item) => item.gold && item.gold.total > 0 && !item.hideFromAll
   );
-  const randomKey = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-  return itemsData[randomKey];
+  const item = items[Math.floor(Math.random() * items.length)];
+
+  const { previousSession } = await startSession({
+    channelId: message.channel.id,
+    gameType: GAME_TYPE,
+    message,
+    durationMs: SESSION_DURATION_MS,
+    data: {
+      itemName: item.name,
+      itemPrice: item.gold.total,
+    },
+    onExpire: async (expiredMessage, session) => {
+      await expiredMessage.channel.send({
+        embeds: [
+          createErrorEmbed(
+            "Partie expiree",
+            `Le prix de **${session.get("itemName")}** etait **${session.get(
+              "itemPrice"
+            )} PO**.`
+          ),
+        ],
+      });
+    },
+  });
+
+  const embed = createInfoEmbed(
+    `Combien coute ${item.name} ?`,
+    previousSession
+      ? "L'ancienne partie a ete remplacee proprement."
+      : "Devinez le prix total de l'objet en pieces d'or avec `!gold <nombre>`."
+  );
+  embed.setImage(await itemImageUrl(item.image.full));
+  await message.channel.send({ embeds: [embed] });
 }
 
 module.exports = async (message) => {
-  const args = message.content.split(" ").slice(1);
+  const input = getCommandArgs(message, "!gold");
 
-  if (args[0] === "stop") {
-    if (goldSessions[message.channel.id]) {
-      delete goldSessions[message.channel.id];
-      const embed = new EmbedBuilder()
-        .setTitle("Session arrêtée")
-        .setDescription("La session de jeu a été arrêtée.")
-        .setColor(0x0099ff);
-      message.channel.send({ embeds: [embed] });
-    } else {
-      message.channel.send("Aucune session de jeu en cours.");
-    }
-  } else if (args[0] === "reset" || !goldSessions[message.channel.id]) {
-    // Gère le reset ou démarrer une nouvelle session si aucune n'est active
-    const itemsData = await fetchAllItems();
-    const randomItem = await selectRandomItem(itemsData);
+  if (!input) {
+    await startGoldGame(message);
+    return;
+  }
 
-    if (randomItem) {
-      const embed = new EmbedBuilder()
-        .setTitle(randomItem.name)
-        .setImage(
-          `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/item/${randomItem.image.full}`
-        )
-        .setColor(0x0099ff)
-        .setDescription("Devinez le prix de cet objet en pièces d'or !");
-
-      message.channel.send({ embeds: [embed] });
-      goldSessions[message.channel.id] = { itemPrice: randomItem.gold.total };
-    } else {
-      message.channel.send(
-        "Impossible de récupérer les informations de l'objet."
-      );
-    }
-  } else if (args.length > 0) {
-    // Vérifie les réponses des utilisateurs
-    const guess = parseInt(args[0], 10);
-    if (isNaN(guess)) {
-      const embed = new EmbedBuilder()
-        .setColor(0xff0000)
-        .setTitle("Erreur")
-        .setDescription("Veuillez entrer un nombre valide.");
-      message.channel.send({ embeds: [embed] });
+  if (["stop", "reset", "cancel", "annuler"].includes(normalizeName(input))) {
+    if (normalizeName(input) === "reset") {
+      await startGoldGame(message);
       return;
     }
 
-    const correctPrice = goldSessions[message.channel.id]?.itemPrice;
-
-    if (guess === correctPrice) {
-      const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle("Félicitations !")
-        .setDescription(
-          `Vous avez correctement deviné le prix de l'objet : ${correctPrice} pièces d'or.`
-        );
-
-      message.channel.send({ embeds: [embed] });
-      updateScore(message.author.id, "gold", 1);
-      delete goldSessions[message.channel.id];
-    } else {
-      const embed = new EmbedBuilder()
-        .setColor(0xff0000)
-        .setTitle("Mauvaise réponse")
-        .setDescription(`Essayez encore ! Le prix correct n'est pas ${guess}.`);
-      message.channel.send({ embeds: [embed] });
-    }
+    const session = await cancelSession(message.channel.id, "cancelled");
+    await message.channel.send({
+      embeds: [
+        session
+          ? createInfoEmbed("Partie annulee", "La partie `!gold` a ete arretee.")
+          : createInfoEmbed("Aucune partie", "Aucune partie `!gold` n'est active ici."),
+      ],
+    });
+    return;
   }
+
+  const session = getSessionForGame(message.channel.id, GAME_TYPE);
+  if (!session) {
+    await startGoldGame(message);
+    await message.channel.send({
+      embeds: [
+        createInfoEmbed(
+          "Partie demarree",
+          "Aucune partie `!gold` n'etait active. J'en ai lance une nouvelle, renvoie ta reponse."
+        ),
+      ],
+    });
+    return;
+  }
+
+  const guess = Number.parseInt(input, 10);
+  if (Number.isNaN(guess)) {
+    await message.channel.send({
+      embeds: [
+        createErrorEmbed("Valeur invalide", "Entre un nombre valide en pieces d'or."),
+      ],
+    });
+    return;
+  }
+
+  if (guess === session.get("itemPrice")) {
+    updateScore(message.author.id, GAME_TYPE, 1);
+    await cancelSession(message.channel.id, "completed");
+    await message.channel.send({
+      embeds: [
+        createSuccessEmbed(
+          "Bonne reponse !",
+          `**${session.get("itemName")}** coute bien **${session.get("itemPrice")} PO**.`
+        ),
+      ],
+    });
+    return;
+  }
+
+  const hint = guess < session.get("itemPrice") ? "plus" : "moins";
+  await message.channel.send({
+    embeds: [
+      createErrorEmbed("Toujours pas", `Ce n'est pas correct. Le prix est ${hint} eleve.`),
+    ],
+  });
 };

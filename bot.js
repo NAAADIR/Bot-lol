@@ -21,7 +21,11 @@ const item = require("./commands/item");
 const gold = require("./commands/gold");
 const infoitem = require("./commands/infoitem");
 const inforune = require("./commands/inforune");
+const daily = require("./commands/daily");
+const profile = require("./commands/profile");
+const regionquiz = require("./commands/regionquiz");
 const { showRanking } = require("./commands/classement");
+const { cancelSession, getSession } = require("./services/gameSessionManager");
 
 const client = new Client({
   intents: [
@@ -50,7 +54,8 @@ client.once("ready", () => {
 
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
-  if (message.content === "!help") {
+  try {
+    if (message.content === "!help") {
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle("Liste des commandes disponibles")
@@ -97,7 +102,7 @@ client.on("messageCreate", async (message) => {
         {
           name: "!classement <gameType>",
           value:
-            "Affiche le classement pour un jeu spécifique. GameType: skins, skills, guest, opening.",
+            "Affiche le classement pour un jeu spécifique. GameType: skins, skills, guest, opening, item, gold, anime, regionquiz.",
         },
         {
           name: "!opening",
@@ -123,6 +128,22 @@ client.on("messageCreate", async (message) => {
           value:
             "Affiche les informations sur une rune spécifique. Exemple : !inforune Conqueror",
         },
+        {
+          name: "!regionquiz",
+          value: "Démarre un quiz pour deviner la région d'un champion.",
+        },
+        {
+          name: "!daily",
+          value: "Affiche le champion LoL du jour et un défi fun.",
+        },
+        {
+          name: "!profile [@user]",
+          value: "Affiche le profil mini-jeux d'un joueur Discord.",
+        },
+        {
+          name: "!cancel",
+          value: "Annule la partie interactive active dans le salon.",
+        },
         { name: "!ping", value: "Vérifie si le bot est en ligne." },
         { name: "!help", value: "Affiche ce message d’aide." }
       )
@@ -146,8 +167,7 @@ client.on("messageCreate", async (message) => {
   } else if (message.content.startsWith("!ranked")) {
     await ranked(message);
   } else if (message.content.startsWith("!guest")) {
-    if (message.author.bot) return;
-    const guessedName = message.content.split(" ")[1];
+    const guessedName = message.content.slice("!guest".length).trim();
     await guest(message, guessedName);
   } else if (message.content.startsWith("!skills")) {
     await skills(message);
@@ -181,6 +201,29 @@ client.on("messageCreate", async (message) => {
     await valoskins(message);
   } else if (message.content.startsWith("!valomap")) {
     await valomap(message);
+  } else if (message.content.startsWith("!profile")) {
+    await profile(message);
+  } else if (message.content.startsWith("!daily")) {
+    await daily(message);
+  } else if (message.content.startsWith("!regionquiz")) {
+    await regionquiz(message);
+  } else if (message.content === "!cancel") {
+    const activeSession = getSession(message.channel.id);
+    if (!activeSession) {
+      await message.channel.send("Aucune partie interactive n'est en cours dans ce salon.");
+      return;
+    }
+
+    await cancelSession(message.channel.id, "cancelled");
+    await message.channel.send(
+      `La partie \`${activeSession.gameType}\` a été annulée proprement.`
+    );
+  }
+  } catch (error) {
+    console.error("Erreur lors du traitement d'une commande:", error);
+    await message.channel.send(
+      "Une erreur est survenue pendant l'exécution de la commande."
+    );
   }
 });
 

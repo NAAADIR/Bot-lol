@@ -1,148 +1,201 @@
 const championsData = require("../champion.json");
-const { EmbedBuilder } = require("discord.js");
 const { updateScore } = require("./classement");
+const {
+  createInfoEmbed,
+  createSuccessEmbed,
+  createErrorEmbed,
+} = require("../services/gameMessageUtils");
+const {
+  startSession,
+  getSessionForGame,
+  cancelSession,
+} = require("../services/gameSessionManager");
+const {
+  normalizeName,
+  championSquareUrl,
+} = require("../services/lolDataService");
 
-// Stockage en mémoire des sessions de jeu, indexé par ID de canal ou d'utilisateur
-const gameSessions = {};
+const GAME_TYPE = "guest";
+const SESSION_DURATION_MS = 1000 * 60 * 5;
 
-// Fonction pour normaliser les noms de champions pour la correspondance
-function normalizeName(name) {
-  return name.replace(/\s+/g, "").toLowerCase();
+function randomChampion() {
+  return championsData[Math.floor(Math.random() * championsData.length)];
 }
 
-// Fonction pour initialiser ou récupérer une session de jeu
-function getGameSession(channelId) {
-  if (!gameSessions[channelId]) {
-    // Initialisation avec un champion aléatoire si la session n'existe pas
-    gameSessions[channelId] = {
-      targetChampion:
-        championsData[Math.floor(Math.random() * championsData.length)],
-    };
-  }
-  return gameSessions[channelId];
-}
-
-// Fonction pour générer des indices basés sur la devinette et le champion cible
 function getChampionHints(guess, target) {
-  let hints = {};
-
-  // Inclure à la fois le résultat de la comparaison et la valeur réelle pour chaque catégorie
-  hints.genre = {
-    result: guess.genre === target.genre ? "✅" : "❌",
-    value: guess.genre,
+  return {
+    Genre: {
+      result: guess.genre === target.genre ? "✅" : "❌",
+      value: guess.genre,
+    },
+    Role: {
+      result: guess.role === target.role ? "✅" : "❌",
+      value: guess.role,
+    },
+    Espece: {
+      result: guess.species === target.species ? "✅" : "❌",
+      value: guess.species,
+    },
+    Ressource: {
+      result: guess.resource === target.resource ? "✅" : "❌",
+      value: guess.resource,
+    },
+    Portee: {
+      result: guess.rangeType === target.rangeType ? "✅" : "❌",
+      value: guess.rangeType,
+    },
+    Region: {
+      result: guess.region === target.region ? "✅" : "❌",
+      value: guess.region,
+    },
+    Sortie: (() => {
+      if (guess.releaseYear === target.releaseYear) {
+        return { result: "✅", value: `En ${target.releaseYear}` };
+      }
+      if (guess.releaseYear < target.releaseYear) {
+        return { result: "🔼", value: `Apres ${guess.releaseYear}` };
+      }
+      return { result: "🔽", value: `Avant ${guess.releaseYear}` };
+    })(),
   };
-  hints.role = {
-    result: guess.role === target.role ? "✅" : "❌",
-    value: guess.role,
-  };
-  hints.race = {
-    result: guess.species === target.species ? "✅" : "❌",
-    value: guess.species,
-  };
-  hints.resource = {
-    result: guess.resource === target.resource ? "✅" : "❌",
-    value: guess.resource,
-  };
-  hints.rangeType = {
-    result: guess.rangeType === target.rangeType ? "✅" : "❌",
-    value: guess.rangeType,
-  };
-  hints.region = {
-    result: guess.region === target.region ? "✅" : "❌",
-    value: guess.region,
-  };
-
-  if (guess.releaseYear === target.releaseYear) {
-    hints.releaseYear = { result: "✅", value: `En ${target.releaseYear}` };
-  } else if (guess.releaseYear < target.releaseYear) {
-    hints.releaseYear = { result: "🔼", value: `Après ${guess.releaseYear}` };
-  } else {
-    hints.releaseYear = { result: "🔽", value: `Avant ${guess.releaseYear}` };
-  }
-
-  return hints;
 }
 
-// Traitement d'une devinette
-async function processGuess(message, guessedName) {
-  const session = getGameSession(message.channel.id);
-  const targetChampion = session.targetChampion;
+async function startGuestGame(message) {
+  const { previousSession } = await startSession({
+    channelId: message.channel.id,
+    gameType: GAME_TYPE,
+    message,
+    durationMs: SESSION_DURATION_MS,
+    data: {
+      targetChampion: randomChampion(),
+      attempts: 0,
+    },
+    onExpire: async (expiredMessage, session) => {
+      await expiredMessage.channel.send({
+        embeds: [
+          createErrorEmbed(
+            "Temps ecoule",
+            `La partie \`!guest\` a expire. Le champion etait **${session.get(
+              "targetChampion"
+            ).name}**.`
+          ),
+        ],
+      });
+    },
+  });
 
+  await message.channel.send({
+    embeds: [
+      createInfoEmbed(
+        "Nouvelle partie !guest",
+        previousSession
+          ? "Une ancienne partie a ete annulee puis remplacee proprement.\nDevinez avec `!guest <nom>` ou arretez avec `!guest stop`."
+          : "Devinez le champion avec `!guest <nom>`.\nChaque essai donne des indices sur le role, la region, la ressource et l'annee."
+      ),
+    ],
+  });
+}
+
+async function processGuess(message, guessedName) {
+  const session = getSessionForGame(message.channel.id, GAME_TYPE);
+  if (!session) {
+    await startGuestGame(message);
+    await message.channel.send({
+      embeds: [
+        createInfoEmbed(
+          "Partie demarree",
+          "Aucune partie `!guest` n'etait en cours. J'en ai lance une nouvelle, renvoie ta proposition."
+        ),
+      ],
+    });
+    return;
+  }
+
+  const targetChampion = session.get("targetChampion");
   const guessedChampion = championsData.find(
-    (champ) => normalizeName(champ.name) === normalizeName(guessedName)
+    (champion) => normalizeName(champion.name) === normalizeName(guessedName)
   );
 
   if (!guessedChampion) {
-    return message.channel.send("Champion introuvable. Essayez à nouveau.");
-  }
-
-  const hints = getChampionHints(guessedChampion, targetChampion);
-
-  const embed = new EmbedBuilder()
-    .setTitle(`Informations pour ${guessedChampion.name}`)
-    .setDescription("Voici les indices basés sur votre devinette :")
-    .setColor(0x0099ff)
-    .setThumbnail(
-      `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${guessedChampion.name}.png`
-    );
-
-  Object.entries(hints).forEach(([key, { result, value }]) => {
-    embed.addFields({
-      name: `${key.charAt(0).toUpperCase() + key.slice(1)}: ${result}`,
-      value: value.toString(),
-      inline: true,
+    await message.channel.send({
+      embeds: [
+        createErrorEmbed(
+          "Champion introuvable",
+          "Le champion propose n'a pas ete reconnu. Verifie l'orthographe et reessaie."
+        ),
+      ],
     });
-  });
+    return;
+  }
 
-  message.channel.send({ embeds: [embed] });
+  session.set("attempts", session.get("attempts") + 1);
 
-  if (
-    normalizeName(guessedChampion.name) === normalizeName(targetChampion.name)
-  ) {
-    // Mettre le message dans un Embed pour une meilleure présentation
-    const embed = new EmbedBuilder()
-      .setTitle(`Félicitations !`)
-      .setDescription(`Vous avez deviné le champion.`)
-      .setColor(0x0099ff);
+  const embed = createInfoEmbed(
+    `Indices pour ${guessedChampion.name}`,
+    "Voici le resultat de ta tentative."
+  );
+  const thumbnailUrl = await championSquareUrl(guessedChampion.name);
+  if (thumbnailUrl) {
+    embed.setThumbnail(thumbnailUrl);
+  }
 
-    try {
-      await message.channel.send({ embeds: [embed] });
-    } catch (error) {
-      console.error("Erreur lors de l'envoi de l'embed :", error);
+  Object.entries(getChampionHints(guessedChampion, targetChampion)).forEach(
+    ([key, { result, value }]) => {
+      embed.addFields({
+        name: `${key} ${result}`,
+        value: String(value),
+        inline: true,
+      });
     }
-    // Mettre à jour le score de l'utilisateur
-    updateScore(message.author.id, "guest", 1);
-    delete gameSessions[message.channel.id];
-  } else {
-    message.channel.send(
-      "Pas tout à fait correct. Essayez avec un autre champion !"
-    );
-  }
-}
+  );
 
-// Ajout du traitement de la commande stop
-function stopGameSession(channelId) {
-  if (gameSessions[channelId]) {
-    delete gameSessions[channelId];
-    return true;
+  await message.channel.send({ embeds: [embed] });
+
+  if (normalizeName(guessedChampion.name) === normalizeName(targetChampion.name)) {
+    updateScore(message.author.id, GAME_TYPE, 1);
+    await cancelSession(message.channel.id, "completed");
+    await message.channel.send({
+      embeds: [
+        createSuccessEmbed(
+          "Bien joue !",
+          `Tu as trouve **${targetChampion.name}** en ${session.get(
+            "attempts"
+          )} tentative(s).`
+        ),
+      ],
+    });
+    return;
   }
-  return false;
+
+  await message.channel.send({
+    embeds: [
+      createInfoEmbed(
+        "Ce n'est pas encore ca",
+        "Continue avec un autre champion ou annule la partie avec `!guest stop`."
+      ),
+    ],
+  });
 }
 
 module.exports = async function guest(message, guessedName) {
-  // Si la commande est "!guest stop", arrête la session de jeu
-  if (guessedName === "stop") {
-    const sessionStopped = stopGameSession(message.channel.id);
-    if (sessionStopped) {
-      return message.channel.send("La partie en cours a été stoppée.");
-    } else {
-      return message.channel.send("Aucune partie en cours à stopper.");
-    }
+  const input = String(guessedName || "").trim();
+
+  if (!input) {
+    await startGuestGame(message);
+    return;
   }
 
-  // Traitement de la devinette si pas la commande stop
-  if (!guessedName) {
-    return message.channel.send("Veuillez spécifier un champion à deviner.");
+  if (["stop", "cancel", "annuler"].includes(normalizeName(input))) {
+    const session = await cancelSession(message.channel.id, "cancelled");
+    await message.channel.send({
+      embeds: [
+        session
+          ? createInfoEmbed("Partie annulee", "La partie `!guest` en cours a ete arretee.")
+          : createInfoEmbed("Aucune partie", "Aucune partie `!guest` n'est active dans ce salon."),
+      ],
+    });
+    return;
   }
-  await processGuess(message, guessedName);
+
+  await processGuess(message, input);
 };

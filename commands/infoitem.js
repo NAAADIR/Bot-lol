@@ -1,14 +1,10 @@
-const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
+const { getItems, itemImageUrl } = require("../services/lolDataService");
 
 // Fonction pour récupérer la liste de tous les objets
 async function fetchAllItems() {
-  const url =
-    "http://ddragon.leagueoflegends.com/cdn/14.6.1/data/fr_FR/item.json";
   try {
-    const response = await axios.get(url);
-    // Convertir l'objet des items en tableau pour faciliter la recherche
-    return Object.values(response.data.data);
+    return Object.values(await getItems());
   } catch (error) {
     console.error(
       "Erreur lors de la récupération de la liste des objets:",
@@ -70,10 +66,9 @@ module.exports = async (message) => {
           value: `Total: ${item.gold.total} pièces d'or`,
           inline: true,
         }
-      )
-      .setThumbnail(
-        `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/item/${item.image.full}`
       );
+
+    embed.setThumbnail(await itemImageUrl(item.image.full));
 
     message.channel.send({ embeds: [embed] });
   } else {

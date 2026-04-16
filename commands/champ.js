@@ -1,20 +1,23 @@
-// Description: Command to get information about a champion in League of Legends
-const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
+const {
+  getChampionDetails,
+  championSquareUrl,
+  spellImageUrl,
+  resolveChampionAssetId,
+} = require("../services/lolDataService");
 
 module.exports = async (message) => {
   const args = message.content.slice("!champ".length).trim().split(" ");
   const summonerInput = args.join(" ");
 
   try {
-    const championResponse = await axios.get(
-      `http://ddragon.leagueoflegends.com/cdn/14.6.1/data/fr_FR/champion/${encodeURIComponent(
-        summonerInput
-      )}.json`
-    );
+    const championId = await resolveChampionAssetId(summonerInput);
+    if (!championId) {
+      throw new Error("Champion introuvable");
+    }
 
-    const championData = Object.values(championResponse.data.data)[0];
-    const baseUrl = "http://ddragon.leagueoflegends.com/cdn/14.6.1/img/";
+    const championData = await getChampionDetails(championId);
+    const thumbnailUrl = await championSquareUrl(championData.name);
 
     // Embed pour la description générale et la compétence passive
     let embed = new EmbedBuilder()
@@ -27,9 +30,11 @@ module.exports = async (message) => {
           value: `${championData.passive.name}: ${championData.passive.description}`,
         }
       )
-      .setThumbnail(`${baseUrl}champion/${championData.id}.png`)
-      .setImage(`${baseUrl}passive/${championData.passive.image.full}`)
       .setTimestamp();
+
+    if (thumbnailUrl) {
+      embed.setThumbnail(thumbnailUrl);
+    }
 
     await message.channel.send({ embeds: [embed] });
 
@@ -39,8 +44,9 @@ module.exports = async (message) => {
         .setColor(0x0397ab)
         .setTitle(`${spell.name}`)
         .setDescription(`${spell.description}`)
-        .setImage(`${baseUrl}spell/${spell.image.full}`)
         .setTimestamp();
+
+      skillEmbed.setImage(await spellImageUrl(spell.image.full));
 
       await message.channel.send({ embeds: [skillEmbed] });
     });

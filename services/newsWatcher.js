@@ -3,10 +3,12 @@ const fs = require("fs");
 const path = require("path");
 const { EmbedBuilder } = require("discord.js");
 const cheerio = require("cheerio");
+const {
+  DISCORD_CHANNEL_ID,
+  NEWS_MENTION_USER_ID,
+} = require("../config/config");
 
 const NEWS_URL = "https://lolesports.com/en-US/news";
-const CHANNEL_ID = "838462200741101568";
-const MENTION_USER_ID = "770022306541600778";
 const POLL_INTERVAL_MS = 1000 * 60 * 10; // 10 minutes
 // Keywords to filter notifications (lowercase)
 const KEYWORDS = [
@@ -83,10 +85,15 @@ async function fetchLatestArticle() {
 
 async function sendNotification(client, article) {
   console.log("[newsWatcher] Sending notification for:", article.url);
-  const channel = await client.channels.fetch(CHANNEL_ID).catch((e) => {
+  if (!DISCORD_CHANNEL_ID) {
+    console.log("[newsWatcher] DISCORD_CHANNEL_ID absent, notification ignorée.");
+    return;
+  }
+
+  const channel = await client.channels.fetch(DISCORD_CHANNEL_ID).catch((e) => {
     console.error(
       "[newsWatcher] Failed to fetch channel:",
-      CHANNEL_ID,
+      DISCORD_CHANNEL_ID,
       e && e.message ? e.message : e
     );
     return null;
@@ -108,7 +115,8 @@ async function sendNotification(client, article) {
       iconURL: client.user.displayAvatarURL(),
     });
 
-  await channel.send({ content: `<@${MENTION_USER_ID}>`, embeds: [embed] });
+  const content = NEWS_MENTION_USER_ID ? `<@${NEWS_MENTION_USER_ID}>` : undefined;
+  await channel.send({ content, embeds: [embed] });
 }
 
 async function checkOnce(client) {

@@ -1,76 +1,58 @@
 const sqlite3 = require("sqlite3").verbose();
 const { EmbedBuilder } = require("discord.js");
 
-// Crée ou ouvre la base de données
-let db = new sqlite3.Database(
+const VALID_GAME_TYPES = [
+  "skins",
+  "skills",
+  "guest",
+  "opening",
+  "item",
+  "gold",
+  "anime",
+  "regionquiz",
+];
+
+const db = new sqlite3.Database(
   "./gameScores.db",
-  sqlite3.OPEN_READWRITE,
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
   (err) => {
     if (err) {
       console.error("Erreur lors de la connexion à la base de données", err);
-    } else {
-      console.log(
-        "Connecté à la base de données SQLite pour les scores de jeu."
-      );
+      return;
     }
+
+    console.log("Connecté à la base de données SQLite pour les scores de jeu.");
   }
 );
 
+db.serialize(() => {
+  db.run(
+    "CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY AUTOINCREMENT, userId TEXT, gameType TEXT, points INTEGER NOT NULL DEFAULT 0, UNIQUE(userId, gameType))"
+  );
+});
+
 function updateScore(userId, gameType, points) {
-  // Recherche d'abord s'il existe déjà un score pour cet utilisateur et ce jeu
-  db.get(
-    "SELECT points FROM scores WHERE userId = ? AND gameType = ?",
-    [userId, gameType],
-    (err, row) => {
+  db.run(
+    `INSERT INTO scores (userId, gameType, points)
+     VALUES (?, ?, ?)
+     ON CONFLICT(userId, gameType) DO UPDATE SET points = points + excluded.points`,
+    [userId, gameType, points],
+    (err) => {
       if (err) {
-        console.error("Erreur lors de la recherche du score", err);
-        return;
-      }
-      if (row) {
-        // Mise à jour du score existant
-        db.run(
-          "UPDATE scores SET points = points + ? WHERE userId = ? AND gameType = ?",
-          [points, userId, gameType],
-          (err) => {
-            if (err) {
-              console.error("Erreur lors de la mise à jour du score", err);
-            }
-          }
-        );
-      } else {
-        // Insertion d'un nouveau score
-        db.run(
-          "INSERT INTO scores (userId, gameType, points) VALUES (?, ?, ?)",
-          [userId, gameType, points],
-          (err) => {
-            if (err) {
-              console.error("Erreur lors de l'insertion du score", err);
-            }
-          }
-        );
+        console.error("Erreur lors de la mise à jour du score", err);
       }
     }
   );
 }
 
 async function showRanking(message, gameType) {
-  // Liste des types de jeu valides
-  const validGameTypes = [
-    "skins",
-    "skills",
-    "guest",
-    "opening",
-    "item",
-    "gold",
-  ];
-
-  if (!validGameTypes.includes(gameType)) {
+  if (!VALID_GAME_TYPES.includes(gameType)) {
     // Crée et envoi un embed informant l'utilisateur d'une erreur
     const errorEmbed = new EmbedBuilder()
       .setColor(0xff0000)
       .setTitle("Type de jeu invalide")
       .setDescription(
-        `Veuillez spécifier un type de jeu valide. Types disponibles : ${validGameTypes.join(
+        `Veuillez spécifier un type de jeu valide. Types disponibles : ${VALID_GAME_TYPES.join(
           ", "
         )}.`
       )
@@ -107,7 +89,7 @@ async function showRanking(message, gameType) {
           .setTitle(`Classement pour ${gameType}`)
           .setDescription("Aucun score disponible pour le moment. ")
           .setFooter({
-            text: "Participez pour apparaître dans le classement ! (jeux dispo : guest, skills, skins, opening, item)",
+            text: "Participez pour apparaître dans le classement ! (jeux dispo : guest, skills, skins, opening, item, gold, anime, regionquiz)",
           });
         message.channel.send({ embeds: [embed] });
       }
@@ -115,7 +97,55 @@ async function showRanking(message, gameType) {
   );
 }
 
+async function showProfile(message, userId) {
+  db.all(
+    "SELECT gameType, points FROM scores WHERE userId = ? ORDER BY points DESC, gameType ASC",
+    [userId],
+    async (err, rows) => {
+      if (err) {
+        console.error("Erreur lors de la récupération du profil", err);
+        await message.channel.send("Impossible de récupérer le profil joueur.");
+        return;
+      }
+
+      const totalPoints = rows.reduce((sum, row) => sum + row.points, 0);
+      const bestGames = rows.length
+        ? rows
+            .slice(0, 5)
+            .map((row) => `- ${row.gameType} : ${row.points} pts`)
+            .join("\n")
+        : "Aucun score enregistré pour le moment.";
+
+      const embed = new EmbedBuilder()
+        .setColor(0x5865f2)
+        .setTitle("Profil mini-jeux")
+        .setDescription(`<@${userId}>`)
+        .addFields(
+          {
+            name: "Total de points",
+            value: String(totalPoints),
+            inline: true,
+          },
+          {
+            name: "Jeux joués",
+            value: String(rows.length),
+            inline: true,
+          },
+          {
+            name: "Meilleurs scores",
+            value: bestGames,
+            inline: false,
+          }
+        );
+
+      await message.channel.send({ embeds: [embed] });
+    }
+  );
+}
+
 module.exports = {
   updateScore,
   showRanking,
+  showProfile,
+  VALID_GAME_TYPES,
 };

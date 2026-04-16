@@ -7,27 +7,32 @@ const {
 } = require("@discordjs/voice");
 const ytdl = require("ytdl-core");
 const openings = require("../opening.json");
-const { EmbedBuilder } = require("discord.js");
 const { updateScore } = require("./classement");
+const {
+  createInfoEmbed,
+  createSuccessEmbed,
+  createErrorEmbed,
+  getCommandArgs,
+} = require("../services/gameMessageUtils");
+const {
+  startSession,
+  getSessionForGame,
+  cancelSession,
+} = require("../services/gameSessionManager");
+const { normalizeName } = require("../services/lolDataService");
 
-let openingSession = null;
+const GAME_TYPE = "opening";
+const SESSION_DURATION_MS = 1000 * 60 * 2;
 
-function normalizeName(name) {
-  return name.replace(/\s+/g, "").toLowerCase();
-}
-
-// Fonction pour jouer un opening
 async function playOpening(message, opening) {
-  const voiceChannelId = message.member.voice.channelId;
+  const voiceChannelId = message.member && message.member.voice.channelId;
   if (!voiceChannelId) {
-    message.channel.send({
+    await message.channel.send({
       embeds: [
-        new EmbedBuilder()
-          .setColor(0x0099ff)
-          .setTitle("Erreur")
-          .setDescription(
-            "Vous devez être dans un channel vocal pour utiliser cette commande."
-          ),
+        createErrorEmbed(
+          "Salon vocal requis",
+          "Tu dois etre dans un salon vocal pour lancer `!opening`."
+        ),
       ],
     });
     return;
@@ -45,75 +50,137 @@ async function playOpening(message, opening) {
   player.play(resource);
   connection.subscribe(player);
 
-  openingSession = { animeName: opening.animeName, connection, player };
-
-  await entersState(player, AudioPlayerStatus.Playing, 5e3);
-  message.channel.send({
-    embeds: [
-      new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle("Devinez l'anime de cet opening!"),
-    ],
+  const { session, previousSession } = await startSession({
+    channelId: message.channel.id,
+    gameType: GAME_TYPE,
+    message,
+    durationMs: SESSION_DURATION_MS,
+    data: {
+      animeName: opening.animeName,
+      connection,
+      player,
+    },
+    onExpire: async (expiredMessage, expiredSession) => {
+      await expiredMessage.channel.send({
+        embeds: [
+          createErrorEmbed(
+            "Temps ecoule",
+            `L'opening etait **${expiredSession.get("animeName")}**.`
+          ),
+        ],
+      });
+    },
   });
 
-  player.on(AudioPlayerStatus.Idle, () => {
-    if (openingSession) {
-      openingSession.connection.destroy();
-      openingSession = null;
+  session.addCleanup(() => {
+    try {
+      player.stop(true);
+    } catch (error) {
+      return error;
     }
+    return null;
+  });
+  session.addCleanup(() => {
+    try {
+      connection.destroy();
+    } catch (error) {
+      return error;
+    }
+    return null;
+  });
+
+  player.on(AudioPlayerStatus.Idle, async () => {
+    const activeSession = getSessionForGame(message.channel.id, GAME_TYPE);
+    if (activeSession) {
+      await cancelSession(message.channel.id, "expired");
+      await message.channel.send({
+        embeds: [
+          createErrorEmbed("Fin de l'extrait", `L'opening etait **${opening.animeName}**.`),
+        ],
+      });
+    }
+  });
+
+  await entersState(player, AudioPlayerStatus.Playing, 5000);
+
+  await message.channel.send({
+    embeds: [
+      createInfoEmbed(
+        "Devine l'anime de cet opening",
+        previousSession
+          ? "Une ancienne partie a ete arretee puis remplacee.\nReponds avec `!opening <anime>` ou stoppe avec `!opening stop`."
+          : "Reponds avec `!opening <anime>` ou stoppe avec `!opening stop`."
+      ),
+    ],
   });
 }
 
 module.exports = async (message) => {
-  const args = message.content.split(" ");
-  const command = args[0].toLowerCase();
-  const additionalCommand = args[1] ? args[1].toLowerCase() : "";
+  const input = getCommandArgs(message, "!opening");
+  const normalizedInput = normalizeName(input);
 
-  if (additionalCommand === "stop" && openingSession) {
-    openingSession.connection.destroy();
-    openingSession = null;
-    message.channel.send({
+  if (!input || normalizedInput === "generate" || normalizedInput === "reset") {
+    const randomIndex = Math.floor(Math.random() * openings.length);
+    const selectedOpening = openings[randomIndex];
+    try {
+      await playOpening(message, selectedOpening);
+    } catch (error) {
+      console.error("Erreur opening:", error);
+      await cancelSession(message.channel.id, "cancelled");
+      await message.channel.send({
+        embeds: [
+          createErrorEmbed(
+            "Lecture impossible",
+            "Impossible de lire cet opening pour le moment. Essaie un autre `!opening`."
+          ),
+        ],
+      });
+    }
+    return;
+  }
+
+  if (["stop", "cancel", "annuler"].includes(normalizedInput)) {
+    const session = await cancelSession(message.channel.id, "cancelled");
+    await message.channel.send({
       embeds: [
-        new EmbedBuilder()
-          .setColor(0x0099ff)
-          .setTitle("L'ouverture a été arrêtée."),
+        session
+          ? createInfoEmbed("Partie annulee", "La partie `!opening` a ete arretee.")
+          : createInfoEmbed("Aucune partie", "Aucune partie `!opening` n'est active ici."),
       ],
     });
-  } else if (additionalCommand === "generate") {
-    if (openingSession) {
-      openingSession.connection.destroy();
-    }
-    const randomIndex = Math.floor(Math.random() * openings.length);
-    const selectedOpening = openings[randomIndex];
-    await playOpening(message, selectedOpening);
-  } else if (command === "!opening" && args.length > 1) {
-    const guess = normalizeName(args.slice(1).join(" "));
-    if (openingSession && guess === normalizeName(openingSession.animeName)) {
-      message.channel.send({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(0x0099ff)
-            .setTitle("Félicitations !")
-            .setDescription("Vous avez trouvé le bon anime."),
-        ],
-      });
-      // Mise à jour du score de l'utilisateur
-      updateScore(message.author.id, "opening", 1);
-      openingSession.connection.destroy();
-      openingSession = null;
-    } else {
-      message.channel.send({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(0x0099ff)
-            .setTitle("Essai encore")
-            .setDescription("Mauvaise réponse, essayez encore !"),
-        ],
-      });
-    }
-  } else if (command === "!opening") {
-    const randomIndex = Math.floor(Math.random() * openings.length);
-    const selectedOpening = openings[randomIndex];
-    await playOpening(message, selectedOpening);
+    return;
   }
+
+  const session = getSessionForGame(message.channel.id, GAME_TYPE);
+  if (!session) {
+    await message.channel.send({
+      embeds: [
+        createInfoEmbed(
+          "Aucune partie active",
+          "Lance d'abord `!opening` dans un salon vocal pour commencer une partie."
+        ),
+      ],
+    });
+    return;
+  }
+
+  if (normalizedInput === normalizeName(session.get("animeName"))) {
+    updateScore(message.author.id, GAME_TYPE, 1);
+    await cancelSession(message.channel.id, "completed");
+    await message.channel.send({
+      embeds: [
+        createSuccessEmbed(
+          "Bonne reponse !",
+          `Tu as trouve **${session.get("animeName")}**.`
+        ),
+      ],
+    });
+    return;
+  }
+
+  await message.channel.send({
+    embeds: [
+      createErrorEmbed("Toujours pas", "Mauvaise reponse, reessaie !"),
+    ],
+  });
 };

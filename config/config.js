@@ -6,4 +6,5 @@ module.exports = {
   DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
   DISCORD_CHANNEL_ID: process.env.DISCORD_CHANNEL_ID,
   HENRIK_API_KEY: process.env.HENRIK_API_KEY,
+  NEWS_MENTION_USER_ID: process.env.NEWS_MENTION_USER_ID,
 };
